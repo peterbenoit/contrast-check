@@ -130,7 +130,6 @@
 
 	const TOOLTIP_ID = "contrast-check-tooltip";
 	let tooltip = null;
-	let pinnedElement = null;
 	let currentTarget = null;
 
 	function createTooltip() {
@@ -184,7 +183,7 @@
         <div class="cc-row">
           <span class="cc-label">Text</span>
           <span class="cc-swatch" style="background:${fgHex}"></span>
-          <span class="cc-value cc-value-copy" title="Click to copy">${fgHex}</span>
+          <span class="cc-value">${fgHex}</span>
         </div>
         <div class="cc-row cc-note">Contrast cannot be computed over images or gradients.</div>
       `;
@@ -203,17 +202,18 @@
           <div class="cc-row">
             <span class="cc-label">Text</span>
             <span class="cc-swatch" style="background:${fgHex}"></span>
-            <span class="cc-value cc-value-copy" title="Click to copy">${fgHex}</span>
+            <span class="cc-value">${fgHex}</span>
           </div>
           <div class="cc-row">
             <span class="cc-label">BG</span>
             <span class="cc-swatch" style="background:${bgHex}"></span>
-            <span class="cc-value cc-value-copy" title="Click to copy">${bgHex}</span>
+            <span class="cc-value">${bgHex}</span>
           </div>
         </div>
         <div class="cc-preview">
           <span style="color:${fgHex}; background:${bgHex}; padding: 2px 6px; border-radius: 3px; font-size: 12px;">Sample Text</span>
         </div>
+        <div class="cc-copy-hint">Click to copy to Clipboard</div>
       `;
 		}
 
@@ -230,29 +230,20 @@
 	// Copy to clipboard
 	// =========================================================================
 
-	function copyToClipboard(text, element) {
+	function copyColorsToClipboard(data) {
+		if (!data || data.hasImage || !data.fgHex || !data.bgHex) return;
+		const text = `FG: ${data.fgHex}\nBG: ${data.bgHex}`;
 		navigator.clipboard.writeText(text).then(() => {
-			// Show feedback
-			const originalText = element.textContent;
-			element.textContent = "Copied!";
-			element.classList.add("cc-copied");
-
-			setTimeout(() => {
-				element.textContent = originalText;
-				element.classList.remove("cc-copied");
-			}, 1000);
+			showCopyFeedback();
 		}).catch(err => {
 			console.error("Failed to copy:", err);
 		});
 	}
 
-	function onTooltipClick(e) {
-		const colorValue = e.target.closest(".cc-value-copy");
-		if (colorValue) {
-			e.stopPropagation();
-			const text = colorValue.textContent;
-			copyToClipboard(text, colorValue);
-		}
+	function showCopyFeedback() {
+		if (!tooltip) return;
+		tooltip.classList.add("cc-flash");
+		setTimeout(() => tooltip?.classList.remove("cc-flash"), 600);
 	}
 
 	// =========================================================================
@@ -338,9 +329,6 @@
 	// =========================================================================
 
 	function onMouseMove(e) {
-		// Don't update if pinned
-		if (pinnedElement) return;
-
 		// Ignore our own tooltip/outline
 		if (e.target.closest(`#${TOOLTIP_ID}, #${OUTLINE_ID}`)) return;
 
@@ -371,32 +359,16 @@
 		e.preventDefault();
 		e.stopPropagation();
 
-		if (pinnedElement) {
-			// Unpin
-			pinnedElement = null;
-			tooltip?.classList.remove("cc-pinned");
-			return;
-		}
-
-		// Pin current element
+		// Copy colors for the element currently shown in the tooltip
 		const data = inspectElement(e.target);
-		if (data) {
-			pinnedElement = e.target;
-			renderTooltip(data);
-			positionTooltip(e);
-			showOutline(e.target);
-			tooltip?.classList.add("cc-pinned");
+		if (data && !data.hasImage) {
+			copyColorsToClipboard(data);
 		}
 	}
 
 	function onKeyDown(e) {
 		if (e.key === "Escape") {
-			if (pinnedElement) {
-				pinnedElement = null;
-				tooltip?.classList.remove("cc-pinned");
-			} else {
-				deactivate();
-			}
+			deactivate();
 		}
 	}
 
@@ -407,9 +379,6 @@
 	function activate() {
 		document.addEventListener("mousemove", onMouseMove, true);
 		document.addEventListener("click", onClick, true);
-		if (tooltip) {
-			tooltip.addEventListener("click", onTooltipClick);
-		}
 		document.addEventListener("keydown", onKeyDown, true);
 		document.body.classList.add("contrast-check-active");
 	}
@@ -418,13 +387,9 @@
 		window.__contrastCheckActive = false;
 		document.removeEventListener("mousemove", onMouseMove, true);
 		document.removeEventListener("click", onClick, true);
-		if (tooltip) {
-			tooltip.removeEventListener("click", onTooltipClick);
-		}
 		document.removeEventListener("keydown", onKeyDown, true);
 		document.body.classList.remove("contrast-check-active");
 
-		pinnedElement = null;
 		currentTarget = null;
 
 		hideTooltip();

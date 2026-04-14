@@ -46,12 +46,7 @@ body.contrast-check-active * {
 #contrast-check-tooltip.cc-visible {
 	opacity: 1;
 	transform: translateY(0);
-}
-
-#contrast-check-tooltip.cc-pinned {
 	pointer-events: auto;
-	border-color: #6366f1;
-	box-shadow: 0 0 0 1px #6366f1, 0 8px 24px rgba(0, 0, 0, 0.35);
 }
 
 /* Header row with ratio */
@@ -156,22 +151,22 @@ body.contrast-check-active * {
 	user-select: all;
 }
 
-.cc-value-copy {
-	cursor: pointer;
-	transition: color 0.15s ease, background-color 0.15s ease;
-	padding: 2px 4px;
-	margin: -2px -4px;
-	border-radius: 3px;
+/* Copy hint */
+.cc-copy-hint {
+	font-size: 10px;
+	color: #45475a;
+	text-align: center;
+	margin-top: 6px;
+	padding-top: 5px;
+	border-top: 1px solid #313244;
+	letter-spacing: 0.03em;
 }
 
-.cc-value-copy:hover {
-	color: #cdd6f4;
-	background-color: rgba(137, 180, 250, 0.15);
-}
-
-.cc-value-copy.cc-copied {
-	color: #a6e3a1;
-	background-color: rgba(166, 227, 161, 0.15);
+/* Flash feedback on successful copy */
+#contrast-check-tooltip.cc-flash {
+	border-color: #a6e3a1;
+	box-shadow: 0 0 0 1px #a6e3a1, 0 8px 24px rgba(0, 0, 0, 0.35);
+	transition: border-color 0.1s ease, box-shadow 0.1s ease, opacity 0.12s ease, transform 0.12s ease;
 }
 
 /* Preview swatch */
