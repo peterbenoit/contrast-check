@@ -1,0 +1,191 @@
+/* Contrast Check — injected styles */
+
+/* Cursor override while active */
+body.contrast-check-active,
+body.contrast-check-active * {
+	cursor: crosshair !important;
+}
+
+/* Element highlight outline */
+#contrast-check-outline {
+	position: absolute;
+	pointer-events: none;
+	border: 2px solid #6366f1;
+	border-radius: 3px;
+	z-index: 2147483645;
+	opacity: 0;
+	transition: opacity 0.1s ease;
+	box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.3);
+}
+
+#contrast-check-outline.cc-outline-visible {
+	opacity: 1;
+}
+
+/* Tooltip container */
+#contrast-check-tooltip {
+	position: fixed;
+	z-index: 2147483646;
+	pointer-events: none;
+	background: #1e1e2e;
+	color: #cdd6f4;
+	border: 1px solid #45475a;
+	border-radius: 8px;
+	padding: 10px 12px;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+	font-size: 12px;
+	line-height: 1.4;
+	min-width: 180px;
+	max-width: 260px;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.2);
+	opacity: 0;
+	transform: translateY(4px);
+	transition: opacity 0.12s ease, transform 0.12s ease;
+}
+
+#contrast-check-tooltip.cc-visible {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+#contrast-check-tooltip.cc-pinned {
+	pointer-events: auto;
+	border-color: #6366f1;
+	box-shadow: 0 0 0 1px #6366f1, 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+/* Header row with ratio */
+.cc-header {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	margin-bottom: 6px;
+}
+
+.cc-ratio {
+	font-size: 18px;
+	font-weight: 700;
+	color: #a6e3a1;
+	letter-spacing: -0.02em;
+}
+
+.cc-ratio.cc-ratio-fail {
+	color: #f38ba8;
+}
+
+.cc-size-label {
+	font-size: 10px;
+	color: #7f849c;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+}
+
+/* Pass/fail badges */
+.cc-badges {
+	display: flex;
+	gap: 6px;
+	margin-bottom: 8px;
+}
+
+.cc-badge {
+	display: inline-block;
+	font-size: 10px;
+	font-weight: 600;
+	padding: 2px 7px;
+	border-radius: 4px;
+	letter-spacing: 0.02em;
+}
+
+.cc-badge.cc-pass {
+	background: rgba(166, 227, 161, 0.15);
+	color: #a6e3a1;
+	border: 1px solid rgba(166, 227, 161, 0.3);
+}
+
+.cc-badge.cc-fail {
+	background: rgba(243, 139, 168, 0.15);
+	color: #f38ba8;
+	border: 1px solid rgba(243, 139, 168, 0.3);
+}
+
+/* Color rows */
+.cc-colors {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	margin-bottom: 6px;
+}
+
+.cc-row {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.cc-row-warning {
+	margin-bottom: 6px;
+}
+
+.cc-row-warning .cc-label {
+	color: #fab387;
+	font-weight: 600;
+	font-size: 11px;
+}
+
+.cc-label {
+	width: 28px;
+	font-size: 10px;
+	color: #7f849c;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	flex-shrink: 0;
+}
+
+.cc-swatch {
+	width: 14px;
+	height: 14px;
+	border-radius: 3px;
+	border: 1px solid rgba(255, 255, 255, 0.15);
+	flex-shrink: 0;
+}
+
+.cc-value {
+	font-family: "SF Mono", "Fira Code", "Cascadia Code", Menlo, Consolas, monospace;
+	font-size: 11px;
+	color: #bac2de;
+	user-select: all;
+}
+
+.cc-value-copy {
+	cursor: pointer;
+	transition: color 0.15s ease, background-color 0.15s ease;
+	padding: 2px 4px;
+	margin: -2px -4px;
+	border-radius: 3px;
+}
+
+.cc-value-copy:hover {
+	color: #cdd6f4;
+	background-color: rgba(137, 180, 250, 0.15);
+}
+
+.cc-value-copy.cc-copied {
+	color: #a6e3a1;
+	background-color: rgba(166, 227, 161, 0.15);
+}
+
+/* Preview swatch */
+.cc-preview {
+	margin-top: 4px;
+	padding-top: 6px;
+	border-top: 1px solid #313244;
+	text-align: center;
+}
+
+/* Unable to compute note */
+.cc-note {
+	font-size: 10px;
+	color: #7f849c;
+	font-style: italic;
+	margin-top: 4px;
+}
