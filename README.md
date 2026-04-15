@@ -8,14 +8,14 @@ A lightweight Chrome extension that shows WCAG contrast ratios on hover. No pane
 - **WCAG 2.1 compliant**: Shows pass/fail for AA and AAA, with large text detection
 - **Background resolution**: Walks up the DOM to find the true effective background color, compositing semi-transparent layers
 - **Background image detection**: Flags elements over background images or gradients instead of giving a wrong answer
-- **Pin results**: Click any element to pin its tooltip for copying values
+- **Copy to clipboard**: Click any element to copy its foreground and background colors to clipboard
 - **Minimal permissions**: Only uses `activeTab` and `scripting`, no persistent access
 
 ## How to use
 
 1. Click the Contrast Check icon in the toolbar to activate
 2. Hover over any text element to see the contrast tooltip
-3. Click an element to pin the tooltip (click again to unpin)
+3. Click an element to copy its colors to clipboard (format: `FG: #hex\nBG: #hex`)
 4. Press **Escape** to deactivate, or click the toolbar icon again
 
 ## Install from source
